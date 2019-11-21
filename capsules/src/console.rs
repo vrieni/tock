@@ -38,6 +38,7 @@ use core::cmp;
 use kernel::common::cells::{OptionalCell, TakeCell};
 use kernel::hil::uart;
 use kernel::{AppId, AppSlice, Callback, Driver, Grant, ReturnCode, Shared};
+use kernel::debug;
 
 /// Syscall driver number.
 use crate::driver;
@@ -228,6 +229,7 @@ impl Driver for Console<'a> {
             1 /* putstr/write_done */ => {
                 self.apps.enter(app_id, |app, _| {
                     app.write_callback = callback;
+                    debug!("succ");
                     ReturnCode::SUCCESS
                 }).unwrap_or_else(|err| err.into())
             },

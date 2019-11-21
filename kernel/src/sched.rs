@@ -16,6 +16,7 @@ use crate::platform::{Chip, Platform};
 use crate::process::{self, Task};
 use crate::returncode::ReturnCode;
 use crate::syscall::{ContextSwitchReason, Syscall};
+use crate::debug;
 
 /// The time a process is permitted to run before being pre-empted
 const KERNEL_TICK_DURATION_US: u32 = 10000;
@@ -282,6 +283,7 @@ impl Kernel {
                             // Handle each of the syscalls.
                             match syscall {
                                 Syscall::MEMOP { operand, arg0 } => {
+                                    debug!("yeah?");
                                     let res = memop::memop(process, operand, arg0);
                                     process.set_syscall_return_value(res.into());
                                 }

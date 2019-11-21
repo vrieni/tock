@@ -181,7 +181,7 @@ pub unsafe fn reset_handler() {
         console: console,
         alarm: alarm,
     };
-
+debug!("app mem {:?}", APP_MEMORY.as_ptr());
     kernel::procs::load_processes(
         board_kernel,
         chip,
@@ -191,6 +191,8 @@ pub unsafe fn reset_handler() {
         FAULT_RESPONSE,
         &process_mgmt_cap,
     );
+
+    debug!("yup");
 
     board_kernel.kernel_loop(&hifive1, chip, None, &main_loop_cap);
 }
