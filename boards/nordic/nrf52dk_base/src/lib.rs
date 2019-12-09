@@ -275,10 +275,10 @@ pub unsafe fn setup_board(
     hil::uart::Receive::set_receive_client(&nrf52::uart::UARTE0, uart_mux);
 
     nrf52::uart::UARTE0.initialize(
-        nrf52::pinmux::Pinmux::new(uart_pins.txd as u32),
-        nrf52::pinmux::Pinmux::new(uart_pins.rxd as u32),
-        nrf52::pinmux::Pinmux::new(uart_pins.cts as u32),
-        nrf52::pinmux::Pinmux::new(uart_pins.rts as u32),
+        nrf52::pinmux::Pinmux::new(uart_pins.txd),
+        nrf52::pinmux::Pinmux::new(uart_pins.rxd),
+        nrf52::pinmux::Pinmux::new(uart_pins.cts),
+        nrf52::pinmux::Pinmux::new(uart_pins.rts),
     );
 
     // Setup the console.
@@ -321,9 +321,9 @@ pub unsafe fn setup_board(
     hil::spi::SpiMaster::set_client(&nrf52::spi::SPIM0, mux_spi);
     hil::spi::SpiMaster::init(&nrf52::spi::SPIM0);
     nrf52::spi::SPIM0.configure(
-        nrf52::pinmux::Pinmux::new(spi_pins.mosi as u32),
-        nrf52::pinmux::Pinmux::new(spi_pins.miso as u32),
-        nrf52::pinmux::Pinmux::new(spi_pins.clk as u32),
+        nrf52::pinmux::Pinmux::new(spi_pins.mosi),
+        nrf52::pinmux::Pinmux::new(spi_pins.miso),
+        nrf52::pinmux::Pinmux::new(spi_pins.clk),
     );
 
     let nonvolatile_storage: Option<

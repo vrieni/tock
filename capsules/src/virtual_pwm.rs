@@ -50,7 +50,7 @@ impl<P: hil::pwm::Pwm> MuxPwm<'a, P> {
                             frequency_hz,
                             duty_cycle,
                         } => {
-                            self.pwm.start(&node.pin, frequency_hz, duty_cycle);
+                            self.pwm.start(node.pin, frequency_hz, duty_cycle);
                             true
                         }
                         Operation::Stop => {
@@ -77,11 +77,11 @@ impl<P: hil::pwm::Pwm> MuxPwm<'a, P> {
                             duty_cycle,
                         } => {
                             // Changed some parameter.
-                            self.pwm.start(&node.pin, frequency_hz, duty_cycle);
+                            self.pwm.start(node.pin, frequency_hz, duty_cycle);
                         }
                         Operation::Stop => {
                             // Ok we got a stop.
-                            self.pwm.stop(&node.pin);
+                            self.pwm.stop(node.pin);
                             self.inflight.clear();
                         }
                     }

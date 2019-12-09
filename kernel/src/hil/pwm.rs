@@ -16,10 +16,10 @@ pub trait Pwm {
     ///   value that corresponds to 100% duty cycle, and divide that
     ///   appropriately to get the desired duty cycle value. For example, a 25%
     ///   duty cycle would be `PWM0.get_maximum_duty_cycle() / 4`.
-    fn start(&self, pin: &Self::Pin, frequency_hz: usize, duty_cycle: usize) -> ReturnCode;
+    fn start(&self, pin: Self::Pin, frequency_hz: usize, duty_cycle: usize) -> ReturnCode;
 
     /// Stop a PWM pin output.
-    fn stop(&self, pin: &Self::Pin) -> ReturnCode;
+    fn stop(&self, pin: Self::Pin) -> ReturnCode;
 
     /// Return the maximum PWM frequency supported by the PWM implementation.
     /// The frequency will be specified in Hertz.

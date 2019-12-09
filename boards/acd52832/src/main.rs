@@ -380,8 +380,8 @@ pub unsafe fn reset_handler() {
         capsules::virtual_i2c::MuxI2C::new(&nrf52832::i2c::TWIM0)
     );
     nrf52832::i2c::TWIM0.configure(
-        nrf52832::pinmux::Pinmux::new(21),
-        nrf52832::pinmux::Pinmux::new(20),
+        nrf52832::pinmux::Pinmux::new(Pin::P0_21),
+        nrf52832::pinmux::Pinmux::new(Pin::P0_20),
     );
     nrf52832::i2c::TWIM0.set_client(i2c_mux);
 
@@ -509,7 +509,7 @@ pub unsafe fn reset_handler() {
     );
     let virtual_pwm_buzzer = static_init!(
         capsules::virtual_pwm::PwmPinUser<'static, nrf52832::pwm::Pwm>,
-        capsules::virtual_pwm::PwmPinUser::new(mux_pwm, nrf52832::pinmux::Pinmux::new(31))
+        capsules::virtual_pwm::PwmPinUser::new(mux_pwm, nrf52832::pinmux::Pinmux::new(Pin::P0_31))
     );
     virtual_pwm_buzzer.add_to_mux();
 

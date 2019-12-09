@@ -56,7 +56,7 @@ struct PwmRegisters {
     _reserved6: [u8; 16],
     seq1: PwmSeqRegisters,
     _reserved7: [u8; 16],
-    psel_out: [VolatileCell<nrf5x::pinmux::Pinmux>; 4],
+    psel_out: [ReadWrite<u32>; 4],
 }
 
 #[repr(C)]
@@ -186,7 +186,7 @@ impl Pwm {
 
     fn start_pwm(
         &self,
-        pin: &nrf5x::pinmux::Pinmux,
+        pin: nrf5x::pinmux::Pinmux,
         frequency_hz: usize,
         duty_cycle: usize,
     ) -> ReturnCode {
@@ -205,7 +205,7 @@ impl Pwm {
         let dc_out = counter_top - ((3 * duty_cycle) / frequency_hz);
 
         // Configure the pin
-        regs.psel_out[0].set(*pin);
+        regs.psel_out[0].set(pin.get_pin_index());
 
         // Start by enabling the peripheral.
         regs.enable.write(ENABLE::ENABLE::SET);
@@ -237,7 +237,7 @@ impl Pwm {
         ReturnCode::SUCCESS
     }
 
-    fn stop_pwm(&self, _pin: &nrf5x::pinmux::Pinmux) -> ReturnCode {
+    fn stop_pwm(&self, _pin: nrf5x::pinmux::Pinmux) -> ReturnCode {
         let regs = &*self.registers;
         regs.tasks_stop.write(TASK::TASK::SET);
         regs.enable.write(ENABLE::ENABLE::CLEAR);
@@ -248,11 +248,11 @@ impl Pwm {
 impl hil::pwm::Pwm for Pwm {
     type Pin = nrf5x::pinmux::Pinmux;
 
-    fn start(&self, pin: &Self::Pin, frequency: usize, duty_cycle: usize) -> ReturnCode {
+    fn start(&self, pin: Self::Pin, frequency: usize, duty_cycle: usize) -> ReturnCode {
         self.start_pwm(pin, frequency, duty_cycle)
     }
 
-    fn stop(&self, pin: &Self::Pin) -> ReturnCode {
+    fn stop(&self, pin: Self::Pin) -> ReturnCode {
         self.stop_pwm(pin)
     }
 
