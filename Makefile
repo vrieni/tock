@@ -48,16 +48,20 @@ ci-travis:
 	@printf "$$(tput bold)*****************$$(tput sgr0)\n"
 	@printf "$$(tput bold)* CI: Libraries *$$(tput sgr0)\n"
 	@printf "$$(tput bold)*****************$$(tput sgr0)\n"
-	@cd libraries/tock-cells && CI=true cargo test
-	@cd libraries/tock-register-interface && CI=true cargo test
+	#TODO: Fix these, or remove this code dump
+	#@cd libraries/enum_primitive && CI=true RUSTFLAGS="-D warnings" cargo test
+	@cd libraries/riscv-csr && CI=true RUSTFLAGS="-D warnings" cargo test
+	@cd libraries/tock-cells && CI=true RUSTFLAGS="-D warnings" cargo test
+	@cd libraries/tock-register-interface && CI=true RUSTFLAGS="-D warnings" cargo test
+	@cd libraries/tock-rt0 && CI=true RUSTFLAGS="-D warnings" cargo test
 	@printf "$$(tput bold)*************$$(tput sgr0)\n"
 	@printf "$$(tput bold)* CI: Archs *$$(tput sgr0)\n"
 	@printf "$$(tput bold)*************$$(tput sgr0)\n"
-	@for f in `./tools/list_archs.sh`; do echo "$$(tput bold)Test $$f"; cd arch/$$f; CI=true TOCK_KERNEL_VERSION=ci_test cargo test || exit 1; cd ../..; done
+	@for f in `./tools/list_archs.sh`; do echo "$$(tput bold)Test $$f"; cd arch/$$f; CI=true RUSTFLAGS="-D warnings" TOCK_KERNEL_VERSION=ci_test cargo test || exit 1; cd ../..; done
 	@printf "$$(tput bold)*************$$(tput sgr0)\n"
 	@printf "$$(tput bold)* CI: Chips *$$(tput sgr0)\n"
 	@printf "$$(tput bold)*************$$(tput sgr0)\n"
-	@for f in `./tools/list_chips.sh`; do echo "$$(tput bold)Test $$f"; cd chips/$$f; CI=true TOCK_KERNEL_VERSION=ci_test cargo test || exit 1; cd ../..; done
+	@for f in `./tools/list_chips.sh`; do echo "$$(tput bold)Test $$f"; cd chips/$$f; CI=true RUSTFLAGS="-D warnings" TOCK_KERNEL_VERSION=ci_test cargo test || exit 1; cd ../..; done
 	@printf "$$(tput bold)**************$$(tput sgr0)\n"
 	@printf "$$(tput bold)* CI: Syntax *$$(tput sgr0)\n"
 	@printf "$$(tput bold)**************$$(tput sgr0)\n"
@@ -65,7 +69,7 @@ ci-travis:
 	@printf "$$(tput bold)**************$$(tput sgr0)\n"
 	@printf "$$(tput bold)* CI: Kernel *$$(tput sgr0)\n"
 	@printf "$$(tput bold)**************$$(tput sgr0)\n"
-	@cd kernel && CI=true TOCK_KERNEL_VERSION=ci_test cargo test
+	@cd kernel && CI=true TOCK_KERNEL_VERSION=ci_test RUSTFLAGS="-D warnings" cargo test
 	@printf "$$(tput bold)*******************$$(tput sgr0)\n"
 	@printf "$$(tput bold)* CI: Compilation *$$(tput sgr0)\n"
 	@printf "$$(tput bold)*******************$$(tput sgr0)\n"
